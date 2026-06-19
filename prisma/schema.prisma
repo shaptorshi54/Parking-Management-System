@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Users {
+  id        String         @id @default(cuid())
+  name      String
+  email     String         @unique
+  password  String
+  phone     String         @unique
+  role      ROLE
+  createdAt DateTime       @default(now())
+  bookings  Bookings[]
+  lots      Parking_Lots[]
+  vehicles  Vehicles[]
+}
+
+model Parking_Lots {
+  id                 String          @id @default(cuid())
+  owner_id           String
+  name               String
+  address            String
+  location_latitude  Float
+  location_longitude Float
+  description        String
+  is_24_7            Boolean         @default(false)
+  opening_time       DateTime?
+  closing_time       DateTime?
+  pricePerHour       Float
+  images             String[]
+  amenities          String[]
+  rating             Float           @default(0)
+  reviewCount        Int             @default(0)
+  createdAt          DateTime        @default(now())
+  owner              Users           @relation(fields: [owner_id], references: [id])
+  slots              Parking_Slots[]
+}
+
+model Parking_Slots {
+  id          String       @id @default(cuid())
+  lot_id      String
+  slot_number Int
+  slot_type   VEHICLE_TYPE
+  status      STATUS       @default(AVAILABLE)
+  bookings    Bookings[]
+  lot         Parking_Lots @relation(fields: [lot_id], references: [id])
+}
+
+model Vehicles {
+  id             String       @id @default(cuid())
+  user_id        String
+  user           Users        @relation(fields: [user_id], references: [id])
+  vehicle_number String       @unique
+  vehicle_model  String
+  type           VEHICLE_TYPE
+  bookings       Bookings[]
+}
+
+model Bookings {
+  id            String         @id @default(cuid())
+  user_id       String
+  user          Users          @relation(fields: [user_id], references: [id])
+  slot_id       String
+  slots         Parking_Slots  @relation(fields: [slot_id], references: [id])
+  vehicle_id    String
+  vehicle       Vehicles       @relation(fields: [vehicle_id], references: [id])
+  booking_start DateTime
+  booking_end   DateTime
+  total_price   Int
+  status        BOOKING_STATUS @default(PENDING)
+}
+
+enum ROLE {
+  USER
+  OWNER
+}
+
+enum VEHICLE_TYPE {
+  CAR
+  BIKE
+  MPV
+}
+
+enum STATUS {
+  AVAILABLE
+  OCCUPIED
+  MAINTENANCE
+  CLOSED
+}
+
+enum BOOKING_STATUS {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}

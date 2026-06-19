@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Fraunces } from "next/font/google";
 import { JetBrains_Mono } from "next/font/google";
-import "./globals.css";
-import "leaflet/dist/leaflet.css";
+import "../globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -23,20 +24,17 @@ export const metadata: Metadata = {
     "Find and reserve premium parking spots in seconds. Real-time availability, instant booking, seamless experience.",
 };
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${fraunces.variable} ${jetBrains.variable} dark h-full`}
-    >
-      <body className="min-h-full flex flex-col font-jetBrains">
+    <SidebarProvider>
+      <TooltipProvider>
         {children}
         <Toaster />
-      </body>
-    </html>
+      </TooltipProvider>
+    </SidebarProvider>
   );
 }
