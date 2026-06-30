@@ -14,6 +14,13 @@ import { Dialog, DialogTitle, DialogTrigger, DialogHeader, DialogContent, Dialog
 import Link from 'next/link';
 import SlotDialogBox from '@/app/components/SlotDialogBox'
 
+interface Slot {
+  id: string;
+  lot_id: string;
+  slot_number: number;
+  slot_type: any;
+  status: any;
+}
 export default async function page({ params }: { params: Promise<{ id: string }> }) {
 
     const resolvedParams = await params;
@@ -219,7 +226,7 @@ export default async function page({ params }: { params: Promise<{ id: string }>
                                 <div className="flex-1 border border-border/50 rounded-lg p-3 bg-muted/5">
                                     <p className="text-xs text-muted-foreground mb-3 text-center">Zone A — Car</p>
                                     <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                                        {carSlots.map((slot) => (
+                                        {carSlots.map((slot: Slot) => (
                                             <SlotDialogBox key={slot.id} slot={slot} lotId={lot.id} />
                                         ))}
                                     </div>
@@ -229,7 +236,7 @@ export default async function page({ params }: { params: Promise<{ id: string }>
                                 <div className="flex-1 border border-border/50 rounded-lg p-3 bg-muted/5">
                                     <p className="text-xs text-muted-foreground mb-3 text-center">Zone B — Bike</p>
                                     <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                                        {bikeSlots.map(slot => (
+                                        {bikeSlots.map((slot: Slot) => (
                                             <SlotDialogBox key={slot.id} slot={slot} lotId={lot.id} />
                                         ))}
                                     </div>
