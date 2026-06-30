@@ -5,6 +5,18 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardTitle, CardContent, CardHeader } from '@/components/ui/card'
 import { CheckCircle2, Wrench } from 'lucide-react'
 
+interface Lot {
+  id: string;
+  name: string;
+  address: string;
+  slots: {
+    id: string;
+    status: string;
+    slot_number: number;
+    bookings: { vehicle: { vehicle_number: string } }[];
+  }[];
+}
+
 export default async function page() {
   const session = await auth()
   if (!session?.user?.id) return <div>Unauthorized</div>
@@ -36,7 +48,7 @@ export default async function page() {
         </div>
       ) : (
         <div className='space-y-12'>
-          {lots.map((lot) => (
+          {lots.map((lot: Lot) => (
             <div key={lot.id} className='space-y-4'>
 
               {/* Lot header */}
