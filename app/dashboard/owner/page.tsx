@@ -16,12 +16,12 @@ export default async function OwnerOverviewPage() {
     include: { slots: true }
   })
 
-  const lotIds = lots.map(l => l.id)
+  const lotIds = lots.map((l: { id: string }) => l.id)
 
   // Dynamic Slots and Lots
   const totalLots = lots.length
-  const totalSlots = lots.reduce((acc, lot) => acc + lot.slots.length, 0)
-  const occupiedSlots = lots.reduce((acc, lot) => acc + lot.slots.filter(s => s.status === "OCCUPIED").length, 0)
+  const totalSlots = lots.reduce((acc: number, lot: { slots: unknown[] }) => acc + lot.slots.length, 0)
+  const occupiedSlots = lots.reduce((acc: number, lot: { slots: { status: string }[] }) => acc + lot.slots.filter((s: { status: string }) => s.status === "OCCUPIED").length, 0)
   const occupancyRate = totalSlots > 0 ? Math.round((occupiedSlots / totalSlots) * 100) : 0
   const allBookings = await prisma.bookings.findMany({
     where: {
@@ -32,7 +32,7 @@ export default async function OwnerOverviewPage() {
   })
 
   const current = new Date().toDateString()
-  const currentRevenue = allBookings.filter(b => (b.status === "COMPLETED" || b.status === "CONFIRMED") && new Date(b.booking_start).toDateString() === current).reduce((sum, b) => sum + b.total_price, 0)
+  const currentRevenue = allBookings.filter((b: { status: string, booking_start: Date }) => (b.status === "COMPLETED" || b.status === "CONFIRMED") && new Date(b.booking_start).toDateString() === current).reduce((sum: number, b: { total_price: number }) => sum + b.total_price, 0)
   const recentBookings = allBookings.slice(0, 5)
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
@@ -121,7 +121,7 @@ export default async function OwnerOverviewPage() {
             </div>
           ) : (
             <div className="divide-y divide-border/50">
-              {recentBookings.map((booking) => {
+              {recentBookings.map((booking: { status: string; id: string; user: { name: string }; slots: { slot_number: number; lot: { name: string } } }) => {
                 const active = booking.status === "CONFIRMED"
                 return (
                   <div key={booking.id} className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors">
