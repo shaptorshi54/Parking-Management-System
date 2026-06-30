@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Activity, CreditCard, IndianRupee, TrendingUp } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/auth'
-import {format} from 'date-fns'
+import { format } from 'date-fns'
 import React from 'react'
 
 export default async function page() {
@@ -16,7 +16,7 @@ export default async function page() {
         select: { id: true }
     })
 
-    const lotIds = ownerLots.map(lot => lot.id)
+    const lotIds = ownerLots.map((lot: { id: string }) => lot.id)
 
     const allBookings = await prisma.bookings.findMany({
         where: {
@@ -33,11 +33,11 @@ export default async function page() {
         }
     })
 
-    const totalRevenue = allBookings.reduce((sum, b) => sum + b.total_price, 0)
+    const totalRevenue = allBookings.reduce((sum: number, b: { total_price: number }) => sum + b.total_price, 0)
     const today = new Date().toDateString()
-    const todayBookings = allBookings.filter(b => new Date(b.booking_start).toDateString() === today)
+    const todayBookings = allBookings.filter((b: { booking_start: Date }) => new Date(b.booking_start).toDateString() === today)
 
-    const todayRevenue = todayBookings.reduce((sum, b) => sum + b.total_price, 0)
+    const todayRevenue = todayBookings.reduce((sum: number, b: { total_price: number }) => sum + b.total_price, 0)
     return (
         <div className='space-y-8 pb-12 p-4'>
             <div>
@@ -52,7 +52,7 @@ export default async function page() {
                     </CardHeader>
                     <CardContent>
                         <div className='text-4xl font-black text-primary flex items-center'>
-                            <IndianRupee className='h-7 w-7'/>
+                            <IndianRupee className='h-7 w-7' />
                             {totalRevenue.toLocaleString()}
                         </div>
                         <p className='text-xs text-muted-foreground mt-1 flex items-center'>
@@ -67,11 +67,11 @@ export default async function page() {
                     </CardHeader>
                     <CardContent>
                         <div className='text-4xl font-black flex items-center'>
-                            <IndianRupee className='h-7 w-7'/>
+                            <IndianRupee className='h-7 w-7' />
                             {todayRevenue.toLocaleString()}
                         </div>
                         <p className='text-xs text-muted-foreground mt-1'>
-                            {todayBookings.length} {todayBookings.length > 1? "bookings":"booking"} today
+                            {todayBookings.length} {todayBookings.length > 1 ? "bookings" : "booking"} today
                         </p>
                     </CardContent>
                 </Card>
@@ -96,11 +96,11 @@ export default async function page() {
                     </div>
                 ) : (
                     <div className='bg-card rounded-xl border shadow-sm'>
-                        {allBookings.map((booking, index) => (
+                        {allBookings.map((booking: { id: string, slots: { lot: { name: string }, slot_number: number }, user: { name: string }, vehicle: { vehicle_number: string }, booking_start: Date, total_price: number }, index) => (
                             <div key={`${booking.id}-${index}`} className='flex items-center justify-between p-4 border-b border-border/50 hover:bg-muted/30 transition-colors'>
                                 <div className='flex items-center gap-4'>
                                     <div className='h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600'>
-                                        <TrendingUp className='h-5 w-5'/>
+                                        <TrendingUp className='h-5 w-5' />
                                     </div>
                                     <div>
                                         <p className='font-semibold'>{booking.slots.lot.name}</p>
@@ -110,8 +110,8 @@ export default async function page() {
                                 </div>
 
                                 <div className='text-right'>
-                                    <p className='font-black text-emerald-500 flex items-center justify-end text-lg'>+<IndianRupee className='h-4 w-4'/>{booking.total_price}</p>
-                                    <p className='text-xs text-muted-foreground uppercase tracking-widest'>{format(new Date(booking.booking_start),"MMM dd, hh:mm a")}</p>
+                                    <p className='font-black text-emerald-500 flex items-center justify-end text-lg'>+<IndianRupee className='h-4 w-4' />{booking.total_price}</p>
+                                    <p className='text-xs text-muted-foreground uppercase tracking-widest'>{format(new Date(booking.booking_start), "MMM dd, hh:mm a")}</p>
                                 </div>
                             </div>
                         ))}
