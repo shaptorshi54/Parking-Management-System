@@ -33,12 +33,12 @@ export default async function page({ params }: { params: Promise<{ id: string }>
         notFound();
     }
     // Calculations
-    const carSlots = lot.slots.filter(s => s.slot_type === 'CAR');
-    const bikeSlots = lot.slots.filter(s => s.slot_type === 'BIKE');
-    const mpvSlots = lot.slots.filter(s => s.slot_type === 'MPV');
+    const carSlots = lot.slots.filter((s: { slot_type: string }) => s.slot_type === 'CAR');
+    const bikeSlots = lot.slots.filter((s: { slot_type: string }) => s.slot_type === 'BIKE');
+    const mpvSlots = lot.slots.filter((s: { slot_type: string }) => s.slot_type === 'MPV');
 
     const totalSlots = lot.slots.length;
-    const occupiedSlots = lot.slots.filter(s => s.status === 'OCCUPIED').length;
+    const occupiedSlots = lot.slots.filter((s: { status: string }) => s.status === 'OCCUPIED').length;
     const occupancyRate = totalSlots > 0 ? Math.round((occupiedSlots / totalSlots) * 100) : 0;
 
     const is247Str = lot.is_24_7 ? "Open 24/7" : "Limited Hours";
