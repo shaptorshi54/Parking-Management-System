@@ -3,7 +3,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { Prisma } from "@prisma/client";
 
 export async function createBookingAction(formData: FormData) {
   try {
@@ -32,7 +31,7 @@ export async function createBookingAction(formData: FormData) {
     }
 
     // 2. Perform a Prisma Transaction to ensure we don't double-book a slot
-    const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+    const result = await prisma.$transaction(async (tx) => {
       // Find an available slot of the correct type in this specific lot
       const availableSlot = await tx.parking_Slots.findFirst({
         where: {
