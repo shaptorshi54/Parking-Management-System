@@ -29,7 +29,8 @@ export async function POST(req: Request) {
 
     try {
         // 2. Start a Prisma Transaction to ensure if slots fail, the lot isn't created empty
-        const result = await prisma.$transaction(async (tx) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const result = await prisma.$transaction(async (tx: any) => {
             
             // A. Create the main Parking Lot
             const lot = await tx.parking_Lots.create({
