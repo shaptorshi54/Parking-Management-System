@@ -46,8 +46,8 @@ export default function MapComponent({ lat, lon, lots }: { lat: number, lon: num
     <div className="relative h-full w-full">
 
       {/* Floating UI Overlay */}
-      <div className="absolute top-4 left-0 w-full z-1000 px-4 pointer-events-none flex flex-col gap-4 items-start">
-        <Link href={`/dashboard/spotter/search`}>
+      <div className="absolute top-4 left-0 w-full z-9999 px-4 pointer-events-none flex flex-col gap-4 items-start">
+        <Link href={`/dashboard/spotter/search`} className="pointer-events-auto">
           <Button>
             <ArrowLeft className="h-6 w-6" />
           </Button>

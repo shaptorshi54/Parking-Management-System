@@ -6,9 +6,15 @@ import { Bike, Car, Plus, Trash2, Truck } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 
-export default async function page() {
+import { auth } from '@/auth'
 
-  const myVehicles = await prisma.vehicles.findMany()
+export default async function page() {
+  const session = await auth()
+  const myVehicles = await prisma.vehicles.findMany({
+    where: {
+      user_id: session?.user?.id
+    }
+  })
   return (
     <div className='space-y-8 pb-12'>
 
