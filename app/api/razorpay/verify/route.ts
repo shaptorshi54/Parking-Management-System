@@ -31,7 +31,7 @@ export async function POST(req: Request) {
         const startTime = new Date()
         const endTime = new Date(startTime.getTime() + bookingData.durationHours * 60 * 60 * 1000)
 
-        const booking = await prisma.$transaction(async (tx) => {
+        const booking = await prisma.$transaction(async (tx: Omit<typeof prisma, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>) => {
             const newBooking = await tx.bookings.create({
                 data: {
                     user_id: bookingData.userId,

@@ -31,7 +31,7 @@ export async function createBookingAction(formData: FormData) {
     }
 
     // 2. Perform a Prisma Transaction to ensure we don't double-book a slot
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: Omit<typeof prisma, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>) => {
       // Find an available slot of the correct type in this specific lot
       const availableSlot = await tx.parking_Slots.findFirst({
         where: {
