@@ -12,6 +12,8 @@ if (!process.env.DATABASE_URL) {
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
 export const prisma: PrismaClient = globalClient.prisma || new PrismaClient({ adapter })
 
+export type TransactionClient = Omit<PrismaClient, "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends">;
+
 if (process.env.NODE_ENV != `production`) {
     globalClient.prisma = prisma
 }

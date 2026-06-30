@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import crypto from 'crypto'
-import { prisma } from '@/lib/prisma'
+import { prisma, TransactionClient } from '@/lib/prisma'
 
 export async function POST(req: Request) {
     try {
@@ -31,8 +31,7 @@ export async function POST(req: Request) {
         const startTime = new Date()
         const endTime = new Date(startTime.getTime() + bookingData.durationHours * 60 * 60 * 1000)
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const booking = await prisma.$transaction(async (tx: any) => {
+        const booking = await prisma.$transaction(async (tx: TransactionClient) => {
             const newBooking = await tx.bookings.create({
                 data: {
                     user_id: bookingData.userId,

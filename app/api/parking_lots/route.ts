@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma'
+import { prisma, TransactionClient } from '@/lib/prisma'
 import { parkingLotValidate } from '../validation/validation'
 import { auth } from '@/auth'
 
@@ -29,8 +29,7 @@ export async function POST(req: Request) {
 
     try {
         // 2. Start a Prisma Transaction to ensure if slots fail, the lot isn't created empty
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const result = await prisma.$transaction(async (tx: any) => {
+        const result = await prisma.$transaction(async (tx: TransactionClient) => {
             
             // A. Create the main Parking Lot
             const lot = await tx.parking_Lots.create({
