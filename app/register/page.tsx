@@ -43,8 +43,13 @@ export default function RegisterPage() {
         return
       }
 
-      toast.success(`Registration successful`)
+      toast.success(`Registration successful! Redirecting to login...`)
       reset()
+      
+      // Automatically redirect to login page after a short delay
+      setTimeout(() => {
+        window.location.href = '/login'
+      }, 1500)
 
     } catch (error) {
       console.error(error)

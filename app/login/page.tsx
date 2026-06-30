@@ -36,23 +36,15 @@ export default function LoginPage() {
                 return
             }
 
-            const session = await getSession()
-            
-            // ─── ROLE VALIDATION CHECK ───
-            if (session?.user?.role !== role) {
-                // If they tried to log in to the wrong tab, instantly sign them out
-                await fetch('/api/auth/signout', { method: 'POST' }); // Force signout silently
-                toast.error(`Access Denied: This email is registered as a ${session?.user?.role === "USER" ? "Spotter" : "Owner"}. Please switch tabs to log in.`)
-                return
-            }
-
-            // If roles match, redirect them to their correct dashboard
+            // ─── ROLE VALIDATION CHECK IS HANDLED SECURELY BY AUTH.TS ───
+            // If they reach here, the credentials provider has successfully verified the role!
             toast.success(`Logged in successfully`)
-            if(session?.user?.role==="USER"){
-                router.push('/dashboard/spotter/search')
-            }
-            else{
-                router.push('/dashboard/owner')
+            
+            // Use window.location.href to force a hard navigation so the session cookie is immediately picked up
+            if (role === "USER") {
+                window.location.href = '/dashboard/spotter/search'
+            } else {
+                window.location.href = '/dashboard/owner'
             }
         } catch (error) {
             console.error(error)
