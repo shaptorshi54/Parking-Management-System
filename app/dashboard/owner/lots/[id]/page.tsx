@@ -186,7 +186,7 @@ export default async function page({ params }: { params: Promise<{ id: string }>
                             <span className="text-xs text-blue-500 cursor-pointer hover:underline">Edit</span>
                         </CardHeader>
                         <CardContent className="p-4 flex flex-wrap gap-2">
-                            {lot.amenities.length > 0 ? lot.amenities.map(am => (
+                            {lot.amenities.length > 0 ? lot.amenities.map((am: string) => (
                                 <Badge key={am} variant="outline" className="bg-blue-500/5 text-blue-400 border-blue-500/20 py-1 px-3 font-normal gap-1.5">
                                     <ShieldCheck className="h-3 w-3" /> {am}
                                 </Badge>
@@ -219,7 +219,7 @@ export default async function page({ params }: { params: Promise<{ id: string }>
                                 <div className="flex-1 border border-border/50 rounded-lg p-3 bg-muted/5">
                                     <p className="text-xs text-muted-foreground mb-3 text-center">Zone A — Car</p>
                                     <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                                        {carSlots.map(slot => (
+                                        {carSlots.map((slot) => (
                                             <SlotDialogBox key={slot.id} slot={slot} lotId={lot.id} />
                                         ))}
                                     </div>
