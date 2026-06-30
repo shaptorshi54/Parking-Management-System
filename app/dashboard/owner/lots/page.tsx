@@ -6,10 +6,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, Car, Clock, IndianRupee, ShieldCheck, Zap, Plus, Search, Filter, ArrowUpDown } from "lucide-react";
 import Link from "next/link";
+import { ReactNode } from "react";
 
+interface Lot {
+  id: string;
+  name: string;
+  address: string;
+  is_24_7: boolean;
+  pricePerHour: number;
+  amenities: string[];
+  slots: { status: string }[];
+}
 export default async function MyLotsPage() {
   const session = await auth();
-  
+
   // Fetch the owner's lots along with their slots
   const myLots = await prisma.parking_Lots.findMany({
     where: { owner_id: session?.user?.id },
@@ -19,12 +29,12 @@ export default async function MyLotsPage() {
 
   // Calculate top-level stats
   const totalLots = myLots.length;
-  const totalSlots = myLots.reduce((acc, lot) => acc + lot.slots.length, 0);
-  const occupiedSlots = myLots.reduce((acc, lot) => acc + lot.slots.filter(s => s.status === "OCCUPIED").length, 0);
+  const totalSlots = myLots.reduce((acc: number, lot: { slots: unknown[] }) => acc + lot.slots.length, 0);
+  const occupiedSlots = myLots.reduce((acc: number, lot: { slots: { status: string }[] }) => acc + lot.slots.filter((s: { status: string }) => s.status === "OCCUPIED").length, 0);
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-12">
-      
+
       {/* =========================================
           SECTION 1: PAGE HEADER & STATS ROW
           ========================================= */}
@@ -81,9 +91,9 @@ export default async function MyLotsPage() {
         </div>
         <div className="flex gap-2 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0">
           <Button variant="secondary" className="bg-muted">All</Button>
-          <Button variant="outline" className="gap-2 border-border"><Filter className="h-4 w-4"/> Published</Button>
-          <Button variant="outline" className="gap-2 border-border"><Filter className="h-4 w-4"/> Draft</Button>
-          <Button variant="outline" className="gap-2 border-border ml-auto"><ArrowUpDown className="h-4 w-4"/> Sort</Button>
+          <Button variant="outline" className="gap-2 border-border"><Filter className="h-4 w-4" /> Published</Button>
+          <Button variant="outline" className="gap-2 border-border"><Filter className="h-4 w-4" /> Draft</Button>
+          <Button variant="outline" className="gap-2 border-border ml-auto"><ArrowUpDown className="h-4 w-4" /> Sort</Button>
         </div>
       </div>
 
@@ -94,14 +104,14 @@ export default async function MyLotsPage() {
         {myLots.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">You don't have any lots yet.</div>
         ) : (
-          myLots.map((lot) => {
-            const lotOccupied = lot.slots.filter(s => s.status === "OCCUPIED").length;
+          myLots.map((lot: Lot) => {
+            const lotOccupied = lot.slots.filter((s: { status: string }) => s.status === "OCCUPIED").length;
             const occupancyRate = lot.slots.length > 0 ? Math.round((lotOccupied / lot.slots.length) * 100) : 0;
             const is247Str = lot.is_24_7 ? "24/7" : "Limited hours";
 
             return (
               <Card key={lot.id} className="flex flex-row overflow-hidden shadow-sm hover:border-primary/50 transition-colors bg-card p-0">
-                
+
                 {/* 3A. Left Accent Column */}
                 <div className="w-12 sm:w-16 bg-blue-500/10 flex items-center justify-center border-r border-border shrink-0">
                   <Car className="h-5 w-5 text-blue-500 opacity-60" />
@@ -130,10 +140,10 @@ export default async function MyLotsPage() {
                       <div className="flex items-center"><Clock className="mr-1.5 h-3.5 w-3.5" /> {is247Str}</div>
                       <div className="flex items-center">{occupancyRate}% occupied</div>
                     </div>
-                    
+
                     {/* Amenities Row */}
                     <div className="flex flex-wrap items-center gap-1.5 sm:flex">
-                      {lot.amenities.map(amenity => (
+                      {lot.amenities.map((amenity: string) => (
                         <Badge key={amenity} variant="secondary" className="bg-muted/50 font-normal text-xs py-0">
                           {amenity}
                         </Badge>
