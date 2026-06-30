@@ -40,11 +40,13 @@ export default function LoginPage() {
             // If they reach here, the credentials provider has successfully verified the role!
             toast.success(`Logged in successfully`)
             
-            // Use window.location.href to force a hard navigation so the session cookie is immediately picked up
+            // Use router.push for smooth client-side routing, and router.refresh to ensure the session cookie is recognized
             if (role === "USER") {
-                window.location.href = '/dashboard/spotter/search'
+                router.push('/dashboard/spotter/search')
+                router.refresh()
             } else {
-                window.location.href = '/dashboard/owner'
+                router.push('/dashboard/owner')
+                router.refresh()
             }
         } catch (error) {
             console.error(error)

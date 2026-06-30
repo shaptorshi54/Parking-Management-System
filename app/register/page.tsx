@@ -9,6 +9,7 @@ import { Tabs, TabsTrigger, TabsList } from "@/components/ui/tabs"
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 type inputs = {
   name: string,
@@ -19,6 +20,7 @@ type inputs = {
 
 export default function RegisterPage() {
   const [role, setRole] = useState("USER")
+  const router = useRouter()
   const { register, handleSubmit, formState: { errors }, reset } = useForm<inputs>()
 
   const onSubmit: SubmitHandler<inputs> = async (data: inputs) => {
@@ -48,7 +50,7 @@ export default function RegisterPage() {
       
       // Automatically redirect to login page after a short delay
       setTimeout(() => {
-        window.location.href = '/login'
+        router.push('/login')
       }, 1500)
 
     } catch (error) {
