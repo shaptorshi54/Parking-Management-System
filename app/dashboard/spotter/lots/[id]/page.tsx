@@ -73,7 +73,7 @@ export default async function page({ params }: { params: Promise<{ id: string }>
             <div>
               <h3 className="font-semibold mb-2">Amenities</h3>
               <div className="flex flex-wrap gap-2">
-                {lot.amenities.map(amenity => (
+                {lot.amenities.map((amenity:string) => (
                   <span key={amenity} className="text-xs bg-muted px-2 py-1 rounded-md">{amenity}</span>
                 ))}
               </div>

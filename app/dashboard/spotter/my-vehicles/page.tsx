@@ -30,7 +30,7 @@ export default async function page() {
           <Button className='gap-2'>
             <Plus />Add Vehicle
           </Button>
-        </Link> 
+        </Link>
       </div>
 
       {/* vehicle grid */}
@@ -42,7 +42,7 @@ export default async function page() {
         </div>
       ) : (
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {myVehicles.map((vehicle) => {
+          {myVehicles.map((vehicle: { type: string, id: string, vehicle_model: string, vehicle_number: string }) => {
             const Icon = vehicle.type === "BIKE" ? Bike : vehicle.type === "MPV" ? Truck : Car
             return (
               <Card key={vehicle.id} className='border-border/50 shadow-sm hover:shadow-md transition-shadow'>

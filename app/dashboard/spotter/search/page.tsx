@@ -34,14 +34,14 @@ export default async function page() {
       <div className='space-y-4'>
         <h2 className='text-xl font-semibold tracking-tight'>Nearby Lots</h2>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          {availableSlots.map((lot) => (
+          {availableSlots.map((lot: { id: string, name: string, address: string, pricePerHour: number }) => (
             <Card key={lot.id} className='hover:border-primary/50 transition-colors shadow-sm'>
               <CardContent className='p-4 flex flex-col sm:flex-row justify-between gap-4'>
                 {/* Left side info */}
 
                 <div className='space-y-2 flex-1'>
                   <h3 className='font-bold text-lg leading-none'>{lot.name}</h3>
-                  <p className='text-sm text-muted-foreground flex items-center gap-1'><MapPin className='h-3 w-3'/>{lot.address}</p>
+                  <p className='text-sm text-muted-foreground flex items-center gap-1'><MapPin className='h-3 w-3' />{lot.address}</p>
 
                   {/* Badges (Amenities) */}
                   <div className='flex flex-wrap gap-1 mt-2'>
@@ -55,7 +55,7 @@ export default async function page() {
                   <div className='text-right w-full flex flex-row sm:flex-col justify-between sm:justify-end items-center sm:items-end mb-4 sm:mb-0'>
                     <p className='text-xs text-muted-foreground sm:mb-1'>Price</p>
                     <p className='font-bold text-xl flex items-center justify-end text-primary'>
-                      <IndianRupee className='h-4 w-4'/>{lot.pricePerHour}<span className='text-xs text-muted-foreground font-normal ml-1'>/hr</span>
+                      <IndianRupee className='h-4 w-4' />{lot.pricePerHour}<span className='text-xs text-muted-foreground font-normal ml-1'>/hr</span>
                     </p>
                   </div>
 

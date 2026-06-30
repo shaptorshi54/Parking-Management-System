@@ -46,23 +46,23 @@ export default async function page() {
         </div>
       ) : (
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-          {activeBookings.map((booking) => (
+          {activeBookings.map((booking: { id: string, slots: { lot: { address: string, name: string }, slot_number: number }, booking_start: Date, booking_end: Date, vehicle: { vehicle_number: string } }) => (
             <Card key={booking.id} className='border-border/50 shadow-lg relative bg-card'>
 
               <div className='h-2 w-full bg-emerald-500 absolute top-0 left-0' />
-              
+
               <CardHeader className='pt-6 pb-2 border-b border-border/50 bg-muted/20'>
                 <div className='flex justify-between items-start'>
                   <div className=''>
                     <Badge className='bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 border-0 mb-2'>
                       <span className='relative flex h-2 w-2 mr-2'>
-                        <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75'/>
-                        <span className='inline-flex h-2 w-2 rounded-full bg-emerald-500'/>
+                        <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75' />
+                        <span className='inline-flex h-2 w-2 rounded-full bg-emerald-500' />
                       </span>
                       LIVE PASS
                     </Badge>
                     <h2 className='text-2xl font-bold'>{booking.slots.lot.name}</h2>
-                    <p className='flex items-center gap-1 mt-1 text-muted-foreground'><MapPin className='h-4 w-4'/>{booking.slots.lot.address}</p>
+                    <p className='flex items-center gap-1 mt-1 text-muted-foreground'><MapPin className='h-4 w-4' />{booking.slots.lot.address}</p>
                   </div>
                 </div>
               </CardHeader>
@@ -71,11 +71,11 @@ export default async function page() {
                 {/* Time Info */}
                 <div className='grid grid-cols-2 gap-4 bg-muted/30 p-4 rounded-lg border border-border/50'>
                   <div>
-                    <p className='text-xs text-muted-foreground flex items-center gap-1 mb-1'><Calendar className='h-4 w-4'/>Entry Time</p>
+                    <p className='text-xs text-muted-foreground flex items-center gap-1 mb-1'><Calendar className='h-4 w-4' />Entry Time</p>
                     <p className='font-semibold text-sm'>{format(new Date(booking.booking_start), "hh:mm a")}</p>
                   </div>
                   <div>
-                    <p className='flex items-center text-muted-foreground  gap-1 mb-1'><Clock className='h-4 w-4'/>Exit Before</p>
+                    <p className='flex items-center text-muted-foreground  gap-1 mb-1'><Clock className='h-4 w-4' />Exit Before</p>
                     <p className='font-semibold text-sm text-destructive'>{format(new Date(booking.booking_end), "hh:mm a")}</p>
                   </div>
                 </div>
