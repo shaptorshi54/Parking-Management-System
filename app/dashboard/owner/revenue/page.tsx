@@ -96,7 +96,7 @@ export default async function page() {
                     </div>
                 ) : (
                     <div className='bg-card rounded-xl border shadow-sm'>
-                        {allBookings.map((booking: { id: string, slots: { lot: { name: string }, slot_number: number }, user: { name: string }, vehicle: { vehicle_number: string }, booking_start: Date, total_price: number }, index) => (
+                        {allBookings.map((booking: { id: string, slots: { lot: { name: string }, slot_number: number }, user: { name: string }, vehicle: { vehicle_number: string }, booking_start: Date, total_price: number }, index:number) => (
                             <div key={`${booking.id}-${index}`} className='flex items-center justify-between p-4 border-b border-border/50 hover:bg-muted/30 transition-colors'>
                                 <div className='flex items-center gap-4'>
                                     <div className='h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600'>
