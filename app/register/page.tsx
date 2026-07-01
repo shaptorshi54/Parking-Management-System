@@ -50,7 +50,7 @@ export default function RegisterPage() {
       
       // Automatically redirect to login page after a short delay
       setTimeout(() => {
-        router.push('/login')
+        window.location.href = '/login'
       }, 1500)
 
     } catch (error) {

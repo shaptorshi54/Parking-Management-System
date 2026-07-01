@@ -1,15 +1,11 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
+import NextAuth from 'next-auth';
+import { authConfig } from './auth.config';
+import { NextResponse } from 'next/server';
 
-export async function middleware(request: NextRequest) {
-  // Grab the cookie to see if they are logged in.
-  // Note: secret must match your NEXTAUTH_SECRET in .env
-  const token = await getToken({ 
-    req: request, 
-    secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET 
-  });
-  
+const { auth } = NextAuth(authConfig);
+
+export default auth((request) => {
+  const token = request.auth?.user; // request.auth contains the decrypted session token
   const currentPath = request.nextUrl.pathname;
 
   // ─── RULE 1: Protect the Login/Register pages ───
@@ -37,7 +33,7 @@ export async function middleware(request: NextRequest) {
 
   // If everything is fine, let them through!
   return NextResponse.next();
-}
+});
 
 // Tell Next.js which paths this middleware should run on
 export const config = {
